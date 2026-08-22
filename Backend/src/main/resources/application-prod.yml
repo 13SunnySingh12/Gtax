@@ -1,0 +1,13 @@
+# Production overrides (activate with SPRING_PROFILES_ACTIVE=prod).
+# Secrets come from the environment / secret manager, never committed.
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+server:
+  forward-headers-strategy: framework   # respect X-Forwarded-* behind the TLS proxy
+logging:
+  level:
+    com.gtax: INFO
+    org.springframework.security: WARN

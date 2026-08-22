@@ -1,0 +1,13 @@
+-- ============================================================================
+-- Migration 0001 — initial schema
+-- This is the canonical first migration. It is identical to
+--   ../schema/schema.sql
+-- Apply it once against a fresh Supabase project. Later changes get their own
+-- numbered file (0002_*.sql, ...) so history stays linear.
+--
+-- Supabase CLI:   supabase db push
+-- Manual:         psql "$SUPABASE_DB_DSN" -f Database/migrations/0001_init.sql
+-- ============================================================================
+\i schema/schema.sql
+-- NOTE: the \i include works with local psql from the Database/ directory.
+-- On the Supabase SQL editor, paste the contents of schema/schema.sql instead.

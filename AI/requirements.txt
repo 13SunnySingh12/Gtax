@@ -1,0 +1,12 @@
+# G-TAX AI service (FastAPI) — pinned, offline-installable dependencies.
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+pydantic-settings==2.6.1
+httpx==0.28.1
+psycopg[binary]==3.2.3
+numpy==2.2.0
+python-dotenv==1.0.1
+
+# Dev / test
+pytest==8.3.4

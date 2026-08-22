@@ -1,0 +1,66 @@
+# ============================================================
+# G-TAX — single consolidated .gitignore (root only)
+# ============================================================
+
+# ---------- Environment / secrets (never commit any env file, incl. templates) ----------
+.env
+.env.*
+*.env
+.env.example
+*.env.example
+*.pem
+*.key
+
+# ---------- Python (AI service + root venv) ----------
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---------- Java / Spring Boot (Backend) ----------
+Backend/target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+!Backend/.mvn/wrapper/maven-wrapper.properties
+hs_err_pid*
+
+# ---------- Node / React (Frontend) ----------
+node_modules/
+Frontend/dist/
+Frontend/dist-ssr/
+Frontend/.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------- Internal documentation (kept local, not published) ----------
+Docs/
+
+# ---------- Build / coverage ----------
+coverage/
+dist/
+build/
+*.log
+logs/
+
+# ---------- Editor / tooling ----------
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Keep the shared, checked-in VS Code settings under Infrastructure/.vscode
+!Infrastructure/.vscode/
+!Infrastructure/.vscode/*

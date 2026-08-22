@@ -1,0 +1,75 @@
+server:
+  port: ${BACKEND_PORT:8080}
+  tomcat:
+    # Read (and discard) the rest of an over-sized upload so the client gets our
+    # 413 response rather than a dropped connection.
+    max-swallow-size: 25MB
+
+spring:
+  application:
+    name: gtax-backend
+  servlet:
+    multipart:
+      # Receipt photos from a phone are routinely several MB. The 1MB default
+      # aborted the connection instead of returning a usable error.
+      max-file-size: 15MB
+      max-request-size: 20MB
+  datasource:
+    url: ${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SUPABASE_DB_USER:postgres}
+    password: ${SUPABASE_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      # Supabase pooler works best in transaction mode; keep the pool small.
+  jpa:
+    hibernate:
+      # Schema is owned by Database/schema.sql + migrations — never let Hibernate alter it.
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: public
+        jdbc:
+          time_zone: UTC
+    show-sql: false
+
+  # Validate every incoming JWT against Supabase's HS256 secret.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Symmetric secret configured programmatically in SecurityConfig
+          # (Supabase signs with HS256 using the project JWT secret).
+          audiences: authenticated
+
+# ---- G-TAX application-specific config ----
+gtax:
+  supabase:
+    url: ${SUPABASE_URL:}
+    service-role-key: ${SUPABASE_SERVICE_ROLE_KEY:}
+    storage-bucket: ${SUPABASE_STORAGE_BUCKET:receipts}
+    jwt:
+      secret: ${SUPABASE_JWT_SECRET:}
+  ai:
+    base-url: ${AI_SERVICE_URL:http://localhost:8000}
+    internal-api-key: ${INTERNAL_API_KEY:local-dev-internal-key-change-me}
+  tax:
+    standard-deduction: ${TAX_STANDARD_DEDUCTION:50000}
+    financial-year-start-month: ${TAX_FINANCIAL_YEAR_START_MONTH:4}
+  cors:
+    allowed-origins: ${BACKEND_CORS_ORIGINS:http://localhost:5173}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    org.springframework.security: INFO
+    com.gtax: INFO

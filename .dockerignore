@@ -1,0 +1,13 @@
+# Keep build contexts small and secrets out of images.
+venv/
+**/node_modules/
+Frontend/dist/
+Backend/target/
+**/__pycache__/
+**/.pytest_cache/
+.git/
+.env
+.env.local
+.env.production
+*.log
+Docs/

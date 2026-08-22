@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  /* Base typography — the same font-sans stack the sidebar uses, served locally
+     by the OS (no external font service). Sizes come from the fontSize tokens. */
+  body {
+    @apply bg-background text-ink font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.55;
+    letter-spacing: -0.006em;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings inherit the app font and tight tracking by default. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-sans text-ink;
+    text-wrap: balance;
+  }
+
+  /* Financial columns of numbers should always align. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Consistent, accessible focus ring (§17): 2px accent, 2px offset. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid theme('colors.primary');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  /* Respect reduced-motion: shimmer collapses to a static placeholder (§5.4/§16). */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-shimmer {
+      animation: none !important;
+    }
+    * {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

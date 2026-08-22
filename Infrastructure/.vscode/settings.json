@@ -1,0 +1,30 @@
+{
+  "// note": "Symlink or copy this folder to the repo root as .vscode, or open the workspace file. Kept under Infrastructure/ per the project layout.",
+  "files.exclude": {
+    "**/target": true,
+    "**/dist": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/venv": true,
+    "**/target": true,
+    "**/dist": true
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/venv/Scripts/python.exe",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["AI/tests"],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "// nullAnalysis": "Disabled: the project doesn't use @NonNull/@Nullable annotations, so JDT null analysis only emits noise hints against Spring/JDK APIs. Compilation is unaffected.",
+  "java.compile.nullAnalysis.mode": "disabled",
+  "eslint.workingDirectories": ["Frontend"],
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[java]": { "editor.tabSize": 4 },
+  "[python]": { "editor.tabSize": 4 },
+  "[javascriptreact]": { "editor.tabSize": 2 },
+  "[javascript]": { "editor.tabSize": 2 }
+}

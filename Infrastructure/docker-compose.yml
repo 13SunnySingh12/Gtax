@@ -1,0 +1,58 @@
+# G-TAX local/container orchestration (TRD §1: three plain REST services + Supabase).
+# Run from the repo root:  docker compose -f Infrastructure/docker-compose.yml up --build
+# Supabase (Postgres/Auth/Storage/pgvector) is managed and lives outside compose.
+#
+# Paths are relative to this file (Infrastructure/). The shared root .env supplies
+# every service's configuration.
+
+services:
+  # ---- AI microservice (internal only; not published to the host by default) ----
+  ai-service:
+    build:
+      context: ../AI
+      dockerfile: ../Infrastructure/docker/ai.Dockerfile
+    env_file:
+      - ../.env
+    expose:
+      - "8000"
+    restart: unless-stopped
+    networks: [gtax]
+
+  # ---- Spring Boot backend (the only service React talks to for data) ----
+  backend:
+    build:
+      context: ../Backend
+      dockerfile: ../Infrastructure/docker/backend.Dockerfile
+    env_file:
+      - ../.env
+    environment:
+      # Reach the AI service by its compose service name (overrides .env localhost).
+      AI_SERVICE_URL: http://ai-service:8000
+      BACKEND_CORS_ORIGINS: http://localhost:8081
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+    restart: unless-stopped
+    networks: [gtax]
+
+  # ---- React frontend (nginx-served static bundle + /api proxy to backend) ----
+  frontend:
+    build:
+      context: ..
+      dockerfile: Infrastructure/docker/frontend.Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        # The browser reaches the backend through nginx at same-origin /api.
+        VITE_API_BASE_URL: ""
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks: [gtax]
+
+networks:
+  gtax:
+    driver: bridge
